@@ -40,6 +40,7 @@
       "exited": { "name": "Område forladt" },
       "most_tracked": { "name": "Mest sporede" },
       "additional_tracked": { "name": "Yderligere sporede" },
+      "additional_tracked_list": { "name": "Yderligere sporingsliste" },
       "airport_arrivals": { "name": "Lufthavnsankomster" },
       "airport_departures": { "name": "Lufthavnsafgange" },
       "helicopters_in_area": { "name": "Helikoptere i området" },

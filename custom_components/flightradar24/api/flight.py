@@ -77,7 +77,7 @@ class FlightType(Enum):
 
 class FlightProcessor:
     __slots__ = ('_in_area', '_tracked', '_most_tracked', '_entered', '_exited', '_min_altitude', '_max_altitude',
-                 '_point', '_client', '_bounds', '_event_manager', '_auto_cleanup')
+                 '_point', '_client', '_bounds', '_event_manager', '_auto_cleanup', '_watchlist')
 
     def __init__(
             self,
@@ -101,6 +101,7 @@ class FlightProcessor:
         self._most_tracked: dict[str, dict[str, Any]] | None = None
         self._entered: list[dict[str, Any]] = []
         self._exited: list[dict[str, Any]] = []
+        self._watchlist: set[str] = set()
 
     @property
     def tracked(self) -> dict[str, dict[str, Any]]:
@@ -126,6 +127,10 @@ class FlightProcessor:
     def exited_list(self) -> list[dict[str, Any]]:
         return self._exited
 
+    @property
+    def watchlist(self) -> list[str]:
+        return sorted(self._watchlist)
+
     def clear_live_data(self) -> None:
         self._in_area = {}
         self._most_tracked = {}
@@ -139,9 +144,13 @@ class FlightProcessor:
 
     def clear_tracked(self) -> None:
         self._tracked = {}
+        self._watchlist = set()
 
     def set_tracked(self, tracked: dict[str, dict[str, Any]]) -> None:
         self._tracked = tracked
+
+    def restore_watchlist(self, entries: list[str]) -> None:
+        self._watchlist = set(e.upper() for e in entries if e)
 
     def enable_most_tracked(self) -> None:
         self._most_tracked = {}
@@ -149,6 +158,7 @@ class FlightProcessor:
     def add_track(self, number: str) -> dict | None:
         found: dict[str, dict[str, Any]] = {}
         number = number.upper()
+        self._watchlist.add(number)
         self._find_flight(found, number)
         if not found:
             return None
@@ -158,6 +168,7 @@ class FlightProcessor:
 
     def remove_track(self, number: str) -> dict | None:
         number = number.upper()
+        self._watchlist.discard(number)
         for flight_id, flight in self._tracked.items():
             if (number == flight.get('aircraft_registration') or
                     number == flight.get('flight_number') or
@@ -185,7 +196,7 @@ class FlightProcessor:
         self._in_area = current
 
     def update_flights_tracked(self) -> None:
-        if not self._tracked:
+        if not self._tracked and not self._watchlist:
             return
 
         reg_numbers = []
@@ -257,6 +268,30 @@ class FlightProcessor:
                         self._event_manager.add_events(EVENT_TRACKED_LEFT_GATE, [new_data])
                         break
         # -----------------------
+
+        # --- WATCHLIST RETRY LOGIC ---
+        # For any watchlist entry not yet in current (e.g. added by registration
+        # while the aircraft was on the ground, or callsign changed), retry the
+        # search each cycle so it gets picked up as soon as it's airborne.
+        already_known = set()
+        for f in current.values():
+            for field in ('aircraft_registration', 'flight_number', 'callsign'):
+                val = f.get(field)
+                if val:
+                    already_known.add(val.upper())
+
+        for entry in self._watchlist:
+            if entry not in already_known:
+                size = len(current)
+                self._find_flight(current, entry)
+                if len(current) != size:
+                    # Newly found — record which identifiers it covers
+                    for f in list(current.values())[size:]:
+                        for field in ('aircraft_registration', 'flight_number', 'callsign'):
+                            val = f.get(field)
+                            if val:
+                                already_known.add(val.upper())
+        # ------------------------------
 
         self._tracked = current
 

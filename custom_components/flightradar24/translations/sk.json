@@ -40,6 +40,7 @@
       "exited": { "name": "Opustili oblasť" },
       "most_tracked": { "name": "Najviac sledované" },
       "additional_tracked": { "name": "Ďalšie sledované" },
+      "additional_tracked_list": { "name": "Zoznam ďalšieho sledovania" },
       "airport_arrivals": { "name": "Prílety na letisko" },
       "airport_departures": { "name": "Odlety z letiska" },
       "helicopters_in_area": { "name": "Vrtuľníky v oblasti" },

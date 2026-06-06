@@ -40,6 +40,7 @@
       "exited": { "name": "Εξήλθαν από την περιοχή" },
       "most_tracked": { "name": "Μεγαλύτερη παρακολούθηση" },
       "additional_tracked": { "name": "Επιπλέον παρακολούθηση" },
+      "additional_tracked_list": { "name": "Λίστα επιπλέον παρακολούθησης" },
       "airport_arrivals": { "name": "Αφίξεις αεροδρομίου" },
       "airport_departures": { "name": "Αναχωρήσεις αεροδρομίου" },
       "helicopters_in_area": { "name": "Ελικόπτερα στην περιοχή" },

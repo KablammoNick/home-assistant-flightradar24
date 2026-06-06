@@ -40,6 +40,7 @@
       "exited": { "name": "Poistunut alueelta" },
       "most_tracked": { "name": "Seuratuimmat" },
       "additional_tracked": { "name": "Lisäseurannassa" },
+      "additional_tracked_list": { "name": "Lisäseurantalista" },
       "airport_arrivals": { "name": "Lentokentän saapuvat" },
       "airport_departures": { "name": "Lentokentän lähtevät" },
       "helicopters_in_area": { "name": "Helikopterit alueella" },

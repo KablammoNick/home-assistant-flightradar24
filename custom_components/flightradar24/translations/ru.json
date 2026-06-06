@@ -40,6 +40,7 @@
       "exited": { "name": "Покинули зону" },
       "most_tracked": { "name": "Самые отслеживаемые" },
       "additional_tracked": { "name": "Дополнительно отслеживаемые" },
+      "additional_tracked_list": { "name": "Список дополнительного отслеживания" },
       "airport_arrivals": { "name": "Прибытие в аэропорт" },
       "airport_departures": { "name": "Вылет из аэропорта" },
       "helicopters_in_area": { "name": "Вертолеты в зоне" },

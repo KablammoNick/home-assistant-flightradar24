@@ -40,6 +40,7 @@
       "exited": { "name": "Opuściły strefę" },
       "most_tracked": { "name": "Najczęściej śledzone" },
       "additional_tracked": { "name": "Dodatkowo śledzone" },
+      "additional_tracked_list": { "name": "Lista dodatkowego śledzenia" },
       "airport_arrivals": { "name": "Przyloty" },
       "airport_departures": { "name": "Odloty" },
       "helicopters_in_area": { "name": "Helikoptery w strefie" },

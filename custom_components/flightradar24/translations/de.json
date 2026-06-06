@@ -40,6 +40,7 @@
       "exited": { "name": "Bereich verlassen" },
       "most_tracked": { "name": "Meistverfolgt" },
       "additional_tracked": { "name": "Zusätzlich verfolgt" },
+      "additional_tracked_list": { "name": "Zusätzliche Verfolgungsliste" },
       "airport_arrivals": { "name": "Flughafen Ankünfte" },
       "airport_departures": { "name": "Flughafen Abflüge" },
       "helicopters_in_area": { "name": "Hubschrauber im Bereich" },

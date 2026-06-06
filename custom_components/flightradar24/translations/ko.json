@@ -40,6 +40,7 @@
       "exited": { "name": "구역 이탈" },
       "most_tracked": { "name": "가장 많이 추적됨" },
       "additional_tracked": { "name": "추가 추적됨" },
+      "additional_tracked_list": { "name": "추가 추적 목록" },
       "airport_arrivals": { "name": "공항 도착" },
       "airport_departures": { "name": "공항 출발" },
       "helicopters_in_area": { "name": "구역 내 헬리콥터" },

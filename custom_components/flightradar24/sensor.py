@@ -179,6 +179,14 @@ RESTORE_SENSOR_TYPES: tuple[FlightRadar24SensorEntityDescription, ...] = (
         value=lambda coord: len(coord.flight.tracked_list),
         attributes=lambda coord: {"flights": coord.flight.tracked_list},
     ),
+    FlightRadar24SensorEntityDescription(
+        key="additional_tracked_list",
+        translation_key="additional_tracked_list",
+        icon="mdi:playlist-check",
+        state_class=SensorStateClass.TOTAL,
+        value=lambda coord: len(coord.flight.watchlist),
+        attributes=lambda coord: {"callsigns": coord.flight.watchlist},
+    ),
 )
 
 
@@ -253,7 +261,12 @@ class FlightRadar24RestoreSensor(FlightRadar24Sensor, RestoreSensor):
         last_state = await self.async_get_last_state()
 
         if last_state:
-            tracked = {}
-            for flight in last_state.attributes.get('flights', {}):
-                tracked[flight.get('id') or flight.get('flight_number') or flight.get('callsign')] = flight
-            self.coordinator.flight.set_tracked(tracked)
+            if self.entity_description.key == "additional_tracked":
+                tracked = {}
+                for flight in last_state.attributes.get('flights', {}):
+                    tracked[flight.get('id') or flight.get('flight_number') or flight.get('callsign')] = flight
+                self.coordinator.flight.set_tracked(tracked)
+
+            elif self.entity_description.key == "additional_tracked_list":
+                callsigns = last_state.attributes.get('callsigns', [])
+                self.coordinator.flight.restore_watchlist(callsigns)

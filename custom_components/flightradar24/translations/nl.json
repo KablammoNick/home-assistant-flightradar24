@@ -40,6 +40,7 @@
       "exited": { "name": "Gebied verlaten" },
       "most_tracked": { "name": "Meest gevolgde vluchten" },
       "additional_tracked": { "name": "Extra gevolgde vluchten" },
+      "additional_tracked_list": { "name": "Extra volglijst" },
       "airport_arrivals": { "name": "Aankomsten luchthaven" },
       "airport_departures": { "name": "Vertrekken luchthaven" },
       "helicopters_in_area": { "name": "Helikopters in de buurt" },

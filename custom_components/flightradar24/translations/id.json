@@ -40,6 +40,7 @@
       "exited": { "name": "Meninggalkan area" },
       "most_tracked": { "name": "Paling banyak dilacak" },
       "additional_tracked": { "name": "Pelacakan tambahan" },
+      "additional_tracked_list": { "name": "Daftar pelacakan tambahan" },
       "airport_arrivals": { "name": "Kedatangan bandara" },
       "airport_departures": { "name": "Keberangkatan bandara" },
       "helicopters_in_area": { "name": "Helikopter di area" },
