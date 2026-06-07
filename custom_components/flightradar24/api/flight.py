@@ -285,12 +285,20 @@ class FlightProcessor:
                 size = len(current)
                 self._find_flight(current, entry)
                 if len(current) != size:
-                    # Newly found — record which identifiers it covers
-                    for f in list(current.values())[size:]:
-                        for field in ('aircraft_registration', 'flight_number', 'callsign'):
-                            val = f.get(field)
-                            if val:
-                                already_known.add(val.upper())
+                    # Registration searches (e.g. VH-FVF) return unreliable
+                    # operator-wide schedule results — only keep live hits.
+                    # Callsign/flight number searches (e.g. FD524) return a
+                    # specific schedule entry so those are allowed through.
+                    is_registration = '-' in entry
+                    new_keys = list(current.keys())[size:]
+                    for k in new_keys:
+                        if is_registration and current[k].get('tracked_type') != 'live':
+                            del current[k]
+                        else:
+                            for field in ('aircraft_registration', 'flight_number', 'callsign'):
+                                val = current[k].get(field)
+                                if val:
+                                    already_known.add(val.upper())
         # ------------------------------
 
         self._tracked = current
