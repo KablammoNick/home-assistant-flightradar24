@@ -40,7 +40,7 @@
       "exited": { "name": "Exited area" },
       "most_tracked": { "name": "Most tracked" },
       "additional_tracked": { "name": "Additional tracked" },
-      "additional_tracked_list": { "name": "Additional tracked watchlist" },
+      "additional_tracked_list": { "name": "Additional tracked list" },
       "airport_arrivals": { "name": "Airport arrivals" },
       "airport_departures": { "name": "Airport departures" },
       "helicopters_in_area": { "name": "Helicopters in area" },

@@ -40,7 +40,7 @@
       "exited": { "name": "Напуснали зоната" },
       "most_tracked": { "name": "Най-проследявани" },
       "additional_tracked": { "name": "Допълнително проследявани" },
-      "additional_tracked_list": { "name": "Списък за допълнително проследяване" },
+      "additional_tracked_list": { "name": "Допълнителен списък за проследяване" },
       "airport_arrivals": { "name": "Пристигащи на летището" },
       "airport_departures": { "name": "Заминаващи от летището" },
       "helicopters_in_area": { "name": "Хеликоптери в зоната" },
