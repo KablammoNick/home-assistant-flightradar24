@@ -219,6 +219,11 @@ class FlightProcessor:
         remains = self._tracked.keys() - current.keys()
         if remains:
             for flight_id in remains:
+                # Previously-scheduled entries are re-evaluated by the watchlist retry
+                # below, which has proper per-type filtering. Re-processing them here
+                # causes stale schedule IDs to accumulate in _tracked indefinitely.
+                if self._tracked[flight_id].get('tracked_type') == 'schedule':
+                    continue
                 flight_number = self._tracked[flight_id].get('flight_number')
                 if flight_number and flight_number in current_flights:
                     continue
@@ -231,7 +236,21 @@ class FlightProcessor:
                 size = current.__len__()
                 self._find_flight(current, number)
                 if size != current.__len__():
-                    current_flights.append(number)
+                    # If _find_flight only returned schedule results for a flight
+                    # number not directly in the watchlist, it's a ghost entry from
+                    # a prior registration-based live flight (e.g. VH-FVF flew as
+                    # FD528; now FD528 shows tomorrow's schedule). Discard these so
+                    # they don't accumulate across days.
+                    new_keys = list(current.keys())[size:]
+                    is_directly_watchlisted = number.upper() in self._watchlist
+                    all_schedule = all(current[k].get('tracked_type') == 'schedule' for k in new_keys)
+                    if all_schedule and not is_directly_watchlisted:
+                        for k in new_keys:
+                            del current[k]
+                        current[flight_id] = self._tracked[flight_id]
+                        current[flight_id]['tracked_type'] = 'not_found'
+                    else:
+                        current_flights.append(number)
                 else:
                     current[flight_id] = self._tracked[flight_id]
                     current[flight_id]['tracked_type'] = 'not_found'
