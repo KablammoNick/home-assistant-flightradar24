@@ -148,6 +148,25 @@ class FlightProcessor:
 
     def set_tracked(self, tracked: dict[str, dict[str, Any]]) -> None:
         self._tracked = tracked
+        self._dedup_by_registration(self._tracked)
+
+    def _dedup_by_registration(self, d: dict) -> None:
+        reg_best: dict[str, tuple[int, int, str]] = {}
+        for fid, fdata in d.items():
+            reg = fdata.get('aircraft_registration')
+            if not reg:
+                continue
+            priority = 1 if fdata.get('tracked_type') == 'live' else 0
+            dep = (fdata.get('time_real_departure') or
+                   fdata.get('time_estimated_departure') or
+                   fdata.get('time_scheduled_departure') or 0)
+            best = reg_best.get(reg)
+            if best is None or (priority, dep) > (best[0], best[1]):
+                reg_best[reg] = (priority, dep, fid)
+        keep_ids = {v[2] for v in reg_best.values()}
+        for fid, fdata in list(d.items()):
+            if fdata.get('aircraft_registration') and fid not in keep_ids:
+                del d[fid]
 
     def restore_watchlist(self, entries: list[str]) -> None:
         self._watchlist = set(e.upper() for e in entries if e)
@@ -320,6 +339,7 @@ class FlightProcessor:
                                     already_known.add(val.upper())
         # ------------------------------
 
+        self._dedup_by_registration(current)
         self._tracked = current
 
     def _find_flight(self, current: dict[str, dict[str, Any]], number: str) -> None:
